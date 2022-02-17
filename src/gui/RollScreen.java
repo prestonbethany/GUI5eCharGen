@@ -1,4 +1,5 @@
 package gui;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGBA;
@@ -12,6 +13,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -86,6 +88,40 @@ public class RollScreen extends Shell {
         createRollerWidgetGData(selectionSix);
         populateDropDown(selectionSix);
 
+        if (Engine.workingSheet.characterName != null) {
+            nameBox.setText(Engine.workingSheet.characterName);
+        }
+
+        if (Engine.workingSheet.strength > 0) {
+            selectionOne.select(Main.rollScreenState[0]);
+            rollOne.setText(Integer.toString(Engine.getStatByNumber(Main.rollScreenState[0])));
+        }
+
+        if (Engine.workingSheet.dexterity > 0) {
+            selectionTwo.select(Main.rollScreenState[1]);
+            rollTwo.setText(Integer.toString(Engine.getStatByNumber(Main.rollScreenState[1])));
+        }
+
+        if (Engine.workingSheet.constitution > 0) {
+            selectionThree.select(Main.rollScreenState[2]);
+            rollThree.setText(Integer.toString(Engine.getStatByNumber(Main.rollScreenState[2])));
+        }
+        
+        if (Engine.workingSheet.intelligence > 0) {
+            selectionFour.select(Main.rollScreenState[3]);
+            rollFour.setText(Integer.toString(Engine.getStatByNumber(Main.rollScreenState[3])));
+        }
+        
+        if (Engine.workingSheet.wisdom > 0) {
+            selectionFive.select(Main.rollScreenState[4]);
+            rollFive.setText(Integer.toString(Engine.getStatByNumber(Main.rollScreenState[4])));
+        }
+        
+        if (Engine.workingSheet.charisma > 0) {
+            selectionSix.select(Main.rollScreenState[5]);
+            rollSix.setText(Integer.toString(Engine.getStatByNumber(Main.rollScreenState[5])));
+        }
+
         rollButton = new Button(rollBG, SWT.NONE);
         rollButton.setText("Roll");
         rollButton.addListener(SWT.Selection, new Listener() {
@@ -108,10 +144,68 @@ public class RollScreen extends Shell {
         nextButton.setText("Next");
         nextButton.addListener(SWT.Selection, new Listener() {
             public void handleEvent(Event e) {
-                Main.raceScreen = new RaceScreen(display);
-                Main.raceScreen.setLocation(Main.rollScreen.getLocation());
-                Main.rollScreen.dispose();
-                Main.raceScreen.open();
+                if (nameBox.getText().equals("")) {
+                    MessageBox error = new MessageBox(gui.Main.rollScreen, SWT.ICON_ERROR | SWT.OK);
+                    error.setText("Name Missing");
+                    error.setMessage("You must have a name first.");
+                    error.open();
+                    return;
+                }
+                
+                if (rollOne.getText().equals("")) {
+                    MessageBox error = new MessageBox(gui.Main.rollScreen, SWT.ICON_ERROR | SWT.OK);
+                    error.setText("Roll Data Missing");
+                    error.setMessage("You must roll first.");
+                    error.open();
+                    return;
+                }
+
+                if (selectionOne.getSelectionIndex() == -1 
+                        || selectionTwo.getSelectionIndex() == -1 
+                        || selectionThree.getSelectionIndex() == -1 
+                        || selectionFour.getSelectionIndex() == -1 
+                        || selectionFive.getSelectionIndex() == -1 
+                        || selectionSix.getSelectionIndex() == -1) {
+                    MessageBox error = new MessageBox(gui.Main.rollScreen, SWT.ICON_ERROR | SWT.OK);
+                    error.setText("Selection Missing");
+                    error.setMessage("You must assign all stats.");
+                    error.open();
+                    return;
+                }
+                Main.rollScreenState[0] = selectionOne.getSelectionIndex();
+                Main.rollScreenState[1] = selectionTwo.getSelectionIndex();
+                Main.rollScreenState[2] = selectionThree.getSelectionIndex();
+                Main.rollScreenState[3] = selectionFour.getSelectionIndex();
+                Main.rollScreenState[4] = selectionFive.getSelectionIndex();
+                Main.rollScreenState[5] = selectionSix.getSelectionIndex();
+
+                int[] hashTable = new int[6];
+                if (Engine.uniqueHashEntry(hashTable, Main.rollScreenState[0], 1) 
+                        && Engine.uniqueHashEntry(hashTable, Main.rollScreenState[1], 2) 
+                        && Engine.uniqueHashEntry(hashTable, Main.rollScreenState[2], 3)
+                        && Engine.uniqueHashEntry(hashTable, Main.rollScreenState[3], 4)
+                        && Engine.uniqueHashEntry(hashTable, Main.rollScreenState[4], 5)
+                        && Engine.uniqueHashEntry(hashTable, Main.rollScreenState[5], 6)) {
+                    
+                    Engine.workingSheet.characterName = nameBox.getText();
+
+                    Engine.marryStatToSheet(Integer.parseInt(rollOne.getText()), hashTable[0]);
+                    Engine.marryStatToSheet(Integer.parseInt(rollTwo.getText()), hashTable[1]);
+                    Engine.marryStatToSheet(Integer.parseInt(rollThree.getText()), hashTable[2]);
+                    Engine.marryStatToSheet(Integer.parseInt(rollFour.getText()), hashTable[3]);
+                    Engine.marryStatToSheet(Integer.parseInt(rollFive.getText()), hashTable[4]);
+                    Engine.marryStatToSheet(Integer.parseInt(rollSix.getText()), hashTable[5]);
+
+                    Main.raceScreen = new RaceScreen(display);
+                    Main.raceScreen.setLocation(Main.rollScreen.getLocation());
+                    Main.rollScreen.dispose();
+                    Main.raceScreen.open();
+                } else {
+                    MessageBox error = new MessageBox(gui.Main.rollScreen, SWT.ICON_ERROR | SWT.OK);
+                    error.setText("Selection Collision");
+                    error.setMessage("All selections must be unique.");
+                    error.open();
+                }
             }
         });
     }

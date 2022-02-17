@@ -2,6 +2,60 @@ package engine;
 
 public class Engine {
 
+    public static CharacterSheet workingSheet = new CharacterSheet();
+
+    public static void marryStatToSheet(int stat, int selection) {
+        switch (selection) {
+            case 1:
+                workingSheet.strength = stat;
+                break;
+            case 2:
+                workingSheet.dexterity = stat;
+                break;
+            case 3:
+                workingSheet.constitution = stat;
+                break;
+            case 4:
+                workingSheet.intelligence = stat;
+                break;
+            case 5:
+                workingSheet.wisdom = stat;
+                break;
+            case 6:
+                workingSheet.charisma = stat;
+                break;
+        }
+    }
+
+    public static int getStatByNumber(int selection) {
+        switch (selection) {
+            case 0:
+                return workingSheet.strength;
+            case 1:
+                return workingSheet.dexterity;
+            case 2:
+                return workingSheet.constitution;
+            case 3:
+                return workingSheet.intelligence;
+            case 4:
+                return workingSheet.wisdom;
+            case 5:
+                return workingSheet.charisma;
+            default: 
+                return -1;
+        }
+    }
+
+    public static boolean uniqueHashEntry(int[] ht, int i, int value) {
+        int hash = i % 6;
+        if (ht[hash] != 0) {
+            return false;
+        } else {
+            ht[hash] = value;
+            return true;
+        }
+    }
+
     public static void quickSort(int[] arr) {
         final int MAX_LEVELS = 300;
         int piv;

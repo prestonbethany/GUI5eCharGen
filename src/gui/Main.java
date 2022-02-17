@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Display;
 public class Main {
     /*default*/ static boolean running = true;
     /*default*/ static RollScreen rollScreen;
+    /*default*/ static int[] rollScreenState = new int[6];
     /*default*/ static RaceScreen raceScreen;
     /*default*/ static String title = "Cain's Character Generator";
 
