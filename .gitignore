@@ -1,4 +1,5 @@
 project.ps1
-sources.txt
 lib
 build
+sources.txt
+options.txt
