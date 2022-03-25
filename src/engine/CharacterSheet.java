@@ -4,7 +4,7 @@ package engine;
 public class CharacterSheet {
     public String characterName;
     public Race race;
-    public CharacterClass CharacterClass;
+    public CharacterClass characterClass;
     public int strength;
     public int dexterity;
     public int constitution;

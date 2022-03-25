@@ -1,8 +1,6 @@
 package gui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGBA;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -45,6 +43,7 @@ public class RollScreen extends Shell {
         nameBox.setLayoutData(gData);
         nameBox.setMessage("Character Name");
         nameBox.setToolTipText("Character Name");
+
         Composite rollerPanel = new Composite(rollBG, SWT.NONE);
         gData = new GridData(SWT.LEFT, SWT.TOP, true, false);
         gData.horizontalAlignment = GridData.FILL;
@@ -56,37 +55,37 @@ public class RollScreen extends Shell {
         createRollerWidgetGData(rollOne);
         Combo selectionOne = new Combo(rollerPanel, SWT.DROP_DOWN | SWT.READ_ONLY);
         createRollerWidgetGData(selectionOne);
-        populateDropDown(selectionOne);
+        populateRollDropDown(selectionOne);
         
         Label rollTwo = new Label(rollerPanel, SWT.BORDER | SWT.CENTER);
         createRollerWidgetGData(rollTwo);
         Combo selectionTwo = new Combo(rollerPanel, SWT.DROP_DOWN | SWT.READ_ONLY);
         createRollerWidgetGData(selectionTwo);
-        populateDropDown(selectionTwo);
+        populateRollDropDown(selectionTwo);
 
         Label rollThree = new Label(rollerPanel, SWT.BORDER | SWT.CENTER);
         createRollerWidgetGData(rollThree);
         Combo selectionThree = new Combo(rollerPanel, SWT.DROP_DOWN | SWT.READ_ONLY);
         createRollerWidgetGData(selectionThree);
-        populateDropDown(selectionThree);
+        populateRollDropDown(selectionThree);
 
         Label rollFour = new Label(rollerPanel, SWT.BORDER | SWT.CENTER);
         createRollerWidgetGData(rollFour);
         Combo selectionFour = new Combo(rollerPanel, SWT.DROP_DOWN | SWT.READ_ONLY);
         createRollerWidgetGData(selectionFour);
-        populateDropDown(selectionFour);
+        populateRollDropDown(selectionFour);
 
         Label rollFive = new Label(rollerPanel, SWT.BORDER | SWT.CENTER);
         createRollerWidgetGData(rollFive);
         Combo selectionFive = new Combo(rollerPanel, SWT.DROP_DOWN | SWT.READ_ONLY);
         createRollerWidgetGData(selectionFive);
-        populateDropDown(selectionFive);
+        populateRollDropDown(selectionFive);
 
         Label rollSix = new Label(rollerPanel, SWT.BORDER | SWT.CENTER);
         createRollerWidgetGData(rollSix);
         Combo selectionSix = new Combo(rollerPanel, SWT.DROP_DOWN | SWT.READ_ONLY);
         createRollerWidgetGData(selectionSix);
-        populateDropDown(selectionSix);
+        populateRollDropDown(selectionSix);
 
         if (Engine.workingSheet.characterName != null) {
             nameBox.setText(Engine.workingSheet.characterName);
@@ -221,9 +220,9 @@ public class RollScreen extends Shell {
         rollWidget.setLayoutData(gData);
     }
 
-    private static void populateDropDown(Combo combo) {
+    private static void populateRollDropDown(Combo combo) {
         String[] arr = {"Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"};
         combo.setItems(arr);
-        combo.setBackground(new Color(new RGBA(255, 255, 255, 255)));
+        combo.setBackground(Main.comboColor);
     }
 }

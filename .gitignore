@@ -1,5 +1,6 @@
 project.ps1
 lib
 build
+jar
 sources.txt
 options.txt
